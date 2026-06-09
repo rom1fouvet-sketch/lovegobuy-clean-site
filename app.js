@@ -27,6 +27,7 @@ const els = {
   shipDelay: document.getElementById("shipDelay"),
   couponPopup: document.getElementById("couponPopup"),
   closeCoupon: document.getElementById("closeCoupon"),
+  heroMiniGrid: document.querySelector(".mini-grid"),
 };
 
 function parseCSV(text) {
@@ -156,6 +157,24 @@ function setStatus(message, type = "info") {
   els.status.textContent = message;
   els.status.dataset.type = type;
   els.status.hidden = !message;
+}
+
+
+function renderHeroPreview() {
+  if (!els.heroMiniGrid) return;
+  const candidates = state.products
+    .map(product => product.defaultVariant?.imageUrl)
+    .filter(Boolean);
+
+  if (!candidates.length) return;
+
+  const shuffled = [...candidates].sort(() => Math.random() - 0.5).slice(0, 4);
+  const slots = els.heroMiniGrid.querySelectorAll("span");
+  slots.forEach((slot, index) => {
+    const imageUrl = shuffled[index % shuffled.length];
+    if (!imageUrl) return;
+    slot.innerHTML = `<img src="${escapeHtml(imageUrl)}" alt="" loading="lazy" />`;
+  });
 }
 
 function populateFilters() {
@@ -295,6 +314,7 @@ async function loadProducts() {
     state.filtered = [...state.products];
     els.statProducts.textContent = String(state.products.length);
     populateFilters();
+    renderHeroPreview();
     applyFilters();
     if (!state.products.length) setStatus("No active products found. Check status, image_url and product_url columns.", "empty");
   } catch (error) {
