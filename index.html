@@ -4,14 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BeProud Finds</title>
-  <meta name="description" content="Curated fashion finds with QC, images and direct product links." />
+  <meta name="description" content="Curated LoveGoBuy fashion finds powered by Google Sheets." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="noise"></div>
+
   <header class="site-header">
     <nav class="nav">
       <a class="brand" href="#top" aria-label="BeProud Finds home">
@@ -20,18 +21,19 @@
       </a>
       <div class="nav-actions">
         <a href="#catalog" class="nav-link">Catalog</a>
-        <a href="#guide" class="nav-link">Start here</a>
+        <a href="#guide" class="nav-link">Beginner guide</a>
+        <a href="#shipping" class="nav-link">Shipping</a>
+        <a href="https://www.tiktok.com/@beprouddude" class="nav-link" target="_blank" rel="noopener">TikTok</a>
       </div>
     </nav>
 
     <section class="hero" id="top">
       <div class="hero-copy">
         <span class="eyebrow">Updated from Google Sheets</span>
-        <h1>Premium finds, clean catalog, direct links.</h1>
-        <p>Browse curated clothing, shoes, accessories and more. Every card is powered by your spreadsheet, so new products appear without rebuilding the site.</p>
+        <h1>Premium finds, clean catalog.</h1>
         <div class="hero-actions">
           <a class="btn primary" href="#catalog">Browse finds</a>
-          <a class="btn secondary" href="#guide">How it works</a>
+          <a class="btn secondary" href="#guide">Beginner guide</a>
         </div>
       </div>
       <div class="hero-card">
@@ -88,25 +90,100 @@
 
       <div id="statusBox" class="status-box">Loading products...</div>
       <div id="productGrid" class="product-grid"></div>
-      <button id="loadMoreBtn" class="btn load-more" hidden>Load more</button>
+      <button id="loadMoreBtn" class="btn load-more" hidden>Load more finds</button>
     </section>
 
-    <section class="guide" id="guide">
-      <div class="section-title">
-        <span class="eyebrow">Start here</span>
-        <h2>Simple buying flow</h2>
+    <section class="beginner-guide" id="guide">
+      <div class="guide-copy">
+        <span class="eyebrow light">Beginner guide</span>
+        <h2>How to order your first haul</h2>
+        <p>A simple guide for beginners: choose a product, buy it with LoveGoBuy, check QC photos and ship your parcel.</p>
+        <a class="btn guide-btn" href="https://www.tiktok.com/@beprouddude" target="_blank" rel="noopener">Watch TikTok guide →</a>
       </div>
-      <div class="steps">
-        <article><strong>1</strong><h3>Choose a find</h3><p>Use categories, brands and search to find the right item.</p></article>
-        <article><strong>2</strong><h3>Check QC</h3><p>Open QC links when available before ordering.</p></article>
-        <article><strong>3</strong><h3>Buy directly</h3><p>The buy button sends users to the product URL stored in your sheet.</p></article>
+      <div class="guide-steps">
+        <article><strong>01</strong><div><h3>Sign up on LoveGoBuy</h3><p>Create your account with the invite link and claim the available coupons.</p></div></article>
+        <article><strong>02</strong><div><h3>Choose a find</h3><p>Browse the catalog, filter by category or brand, then open the item you like.</p></div></article>
+        <article><strong>03</strong><div><h3>Buy through the agent</h3><p>Open the product link on LoveGoBuy, select your options and send it to the warehouse.</p></div></article>
+        <article><strong>04</strong><div><h3>Check QC photos</h3><p>When the item arrives at the warehouse, look at the QC photos carefully before shipping.</p></div></article>
+        <article><strong>05</strong><div><h3>Ship your haul</h3><p>Group your items, estimate the shipping cost and submit your parcel.</p></div></article>
       </div>
+    </section>
+
+    <section class="shipping-estimator" id="shipping">
+      <div class="shipping-main">
+        <span class="eyebrow light">Shipping estimator</span>
+        <h2>Estimate your shipping cost</h2>
+        <p>Quick estimate only. The real price depends on the agent, parcel size, actual weight and selected shipping line.</p>
+        <div class="shipping-controls">
+          <label>
+            <span>Weight in kg</span>
+            <input id="shipWeight" type="number" min="0.5" step="0.5" value="2" />
+          </label>
+          <label>
+            <span>Destination</span>
+            <select id="shipDestination">
+              <option value="france">France</option>
+              <option value="belgium">Belgium</option>
+              <option value="switzerland">Switzerland</option>
+              <option value="canada">Canada</option>
+              <option value="usa">USA</option>
+            </select>
+          </label>
+          <label>
+            <span>Shipping line</span>
+            <select id="shipLine">
+              <option value="standard">Standard</option>
+              <option value="taxfree">Tax-free</option>
+              <option value="express">Express</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="shipping-result">
+        <span>Estimated total</span>
+        <strong id="shipTotal">€21.90</strong>
+        <small id="shipDelay">Delivery: 8-14 days</small>
+      </div>
+    </section>
+
+    <section class="help-section" id="contact">
+      <div>
+        <span class="eyebrow light">Need help?</span>
+        <h2>If you have any questions, DM me on TikTok.</h2>
+        <p>I’ll help you find the right item, understand QC photos, or use LoveGoBuy before ordering.</p>
+      </div>
+      <a class="btn help-btn" href="https://www.tiktok.com/@beprouddude" target="_blank" rel="noopener">DM me on TikTok →</a>
     </section>
   </main>
 
   <footer class="footer">
-    <p>BeProud Finds is a curated catalog. Product links, images and prices come from the connected spreadsheet.</p>
+    <div class="footer-grid">
+      <div>
+        <h3>BeProud Finds.</h3>
+        <p>Curated finds from China, shipped via LoveGoBuy. This site is informational and helps buyers navigate marketplaces more easily.</p>
+        <p class="disclaimer">We are not affiliated with Taobao, 1688, Weidian, Tmall, LoveGoBuy, or any other shopping platform. All trademarks, logos and brand names belong to their respective owners.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <a href="#top">Home</a>
+        <a href="#catalog">Catalog</a>
+        <a href="#guide">Tutorial</a>
+        <a href="#shipping">Tools</a>
+      </div>
+      <div>
+        <h4>Community & Partners</h4>
+        <a href="https://www.tiktok.com/@beprouddude" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.lovegobuy.com/?invite_code=9OCQKQ" target="_blank" rel="noopener">Shop via LoveGoBuy</a>
+      </div>
+    </div>
+    <p class="copyright">© 2026 BeProud Finds. All rights reserved.</p>
   </footer>
+
+  <a id="couponPopup" class="coupon-popup" href="https://www.lovegobuy.com/?invite_code=9OCQKQ" target="_blank" rel="noopener">
+    <span class="coupon-icon">▣</span>
+    <span><strong>$520 LoveGoBuy coupons</strong><small>Claim before ordering</small></span>
+    <button id="closeCoupon" type="button" aria-label="Close coupon popup">×</button>
+  </a>
 
   <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 

@@ -2,7 +2,7 @@ const state = {
   rawRows: [],
   products: [],
   filtered: [],
-  visibleCount: 24,
+  visibleCount: 12,
 };
 
 const REQUIRED_COLUMNS = ["product_group_id", "category", "subcategory", "brand", "name", "price", "currency", "product_url", "image_url", "status"];
@@ -20,6 +20,13 @@ const els = {
   loadMore: document.getElementById("loadMoreBtn"),
   statProducts: document.getElementById("stat-products"),
   backToTop: document.getElementById("backToTop"),
+  shipWeight: document.getElementById("shipWeight"),
+  shipDestination: document.getElementById("shipDestination"),
+  shipLine: document.getElementById("shipLine"),
+  shipTotal: document.getElementById("shipTotal"),
+  shipDelay: document.getElementById("shipDelay"),
+  couponPopup: document.getElementById("couponPopup"),
+  closeCoupon: document.getElementById("closeCoupon"),
 };
 
 function parseCSV(text) {
@@ -85,6 +92,15 @@ function parsePrice(value) {
   return match ? Number(match[0]) : null;
 }
 
+function formatPrice(value, currency = "USD") {
+  const cleanCurrency = String(currency || "USD").trim();
+  const cleanValue = String(value || "").trim();
+  if (!cleanValue) return "Price unavailable";
+  if (cleanCurrency === "$" || cleanCurrency.toUpperCase() === "USD") return `$${cleanValue}`;
+  if (cleanCurrency === "€" || cleanCurrency.toUpperCase() === "EUR") return `${cleanValue} €`;
+  return `${cleanCurrency} ${cleanValue}`;
+}
+
 function addInviteCode(url) {
   const invite = window.INVITE_CODE || "";
   if (!invite || !url.includes("lovegobuy.com") || url.includes("invite_code=")) return url;
@@ -107,7 +123,7 @@ function groupProducts(rows) {
       color: row.color || "Default",
       size: row.size || "",
       price: parsePrice(row.price),
-      priceText: row.price ? `${row.currency || "USD"} ${row.price}` : "Price unavailable",
+      priceText: formatPrice(row.price, row.currency),
       productUrl: addInviteCode(cleanUrl(row.product_url)),
       imageUrl: cleanUrl(row.image_url),
       qcUrl: cleanUrl(row.qc_url),
@@ -177,7 +193,7 @@ function applyFilters() {
   });
 
   state.filtered = list;
-  state.visibleCount = 24;
+  state.visibleCount = 12;
   renderProducts();
 }
 
@@ -287,12 +303,45 @@ async function loadProducts() {
   }
 }
 
+function updateShippingEstimate() {
+  if (!els.shipWeight || !els.shipTotal || !els.shipDelay) return;
+  const weight = Math.max(0.5, Number(els.shipWeight.value || 2));
+  const destination = els.shipDestination.value;
+  const line = els.shipLine.value;
+
+  const destinationBase = { france: 8.9, belgium: 9.8, switzerland: 12.4, canada: 16.9, usa: 15.9 };
+  const lineRate = { standard: 6.5, taxfree: 8.2, express: 11.8 };
+  const lineDelay = { standard: "8-14 days", taxfree: "7-12 days", express: "4-8 days" };
+  const destinationExtra = destinationBase[destination] ?? 8.9;
+  const rate = lineRate[line] ?? 6.5;
+  const total = destinationExtra + weight * rate;
+
+  els.shipTotal.textContent = `€${total.toFixed(2)}`;
+  els.shipDelay.textContent = `Delivery: ${lineDelay[line] || "8-14 days"}`;
+}
+
+function setupCouponPopup() {
+  if (!els.couponPopup || !els.closeCoupon) return;
+  if (localStorage.getItem("couponPopupClosed") === "true") {
+    els.couponPopup.hidden = true;
+  }
+  els.closeCoupon.addEventListener("click", event => {
+    event.preventDefault();
+    event.stopPropagation();
+    els.couponPopup.hidden = true;
+    localStorage.setItem("couponPopupClosed", "true");
+  });
+}
+
 [els.search, els.category, els.brand, els.price, els.sort].forEach(el => el.addEventListener("input", applyFilters));
 els.loadMore.addEventListener("click", () => {
-  state.visibleCount += 24;
+  state.visibleCount += 12;
   renderProducts();
 });
 els.backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 window.addEventListener("scroll", () => els.backToTop.classList.toggle("visible", window.scrollY > 600));
+[els.shipWeight, els.shipDestination, els.shipLine].forEach(el => el?.addEventListener("input", updateShippingEstimate));
+updateShippingEstimate();
+setupCouponPopup();
 
 loadProducts();
