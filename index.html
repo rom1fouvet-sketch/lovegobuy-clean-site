@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BeProud Finds</title>
+  <meta name="description" content="Curated fashion finds with QC, images and direct product links." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="#top" aria-label="BeProud Finds home">
+        <span class="brand-mark">B</span>
+        <span>BeProud Finds</span>
+      </a>
+      <div class="nav-actions">
+        <a href="#catalog" class="nav-link">Catalog</a>
+        <a href="#guide" class="nav-link">Start here</a>
+      </div>
+    </nav>
+
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <span class="eyebrow">Updated from Google Sheets</span>
+        <h1>Premium finds, clean catalog, direct links.</h1>
+        <p>Browse curated clothing, shoes, accessories and more. Every card is powered by your spreadsheet, so new products appear without rebuilding the site.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#catalog">Browse finds</a>
+          <a class="btn secondary" href="#guide">How it works</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="stat">
+          <span id="stat-products">0</span>
+          <small>products loaded</small>
+        </div>
+        <div class="mini-grid" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="toolbar-section" id="catalog">
+      <div class="section-title">
+        <span class="eyebrow">Catalog</span>
+        <h2>Latest finds</h2>
+      </div>
+
+      <div class="toolbar">
+        <label class="search-wrap">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="Search brand, item, category..." />
+        </label>
+        <label>
+          <span>Category</span>
+          <select id="categoryFilter"></select>
+        </label>
+        <label>
+          <span>Brand</span>
+          <select id="brandFilter"></select>
+        </label>
+        <label>
+          <span>Price</span>
+          <select id="priceFilter">
+            <option value="all">All prices</option>
+            <option value="under20">Under 20</option>
+            <option value="20to50">20 - 50</option>
+            <option value="over50">50+</option>
+          </select>
+        </label>
+        <label>
+          <span>Sort</span>
+          <select id="sortSelect">
+            <option value="newest">Newest</option>
+            <option value="priceAsc">Price: low to high</option>
+            <option value="priceDesc">Price: high to low</option>
+            <option value="nameAsc">Name A-Z</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="statusBox" class="status-box">Loading products...</div>
+      <div id="productGrid" class="product-grid"></div>
+      <button id="loadMoreBtn" class="btn load-more" hidden>Load more</button>
+    </section>
+
+    <section class="guide" id="guide">
+      <div class="section-title">
+        <span class="eyebrow">Start here</span>
+        <h2>Simple buying flow</h2>
+      </div>
+      <div class="steps">
+        <article><strong>1</strong><h3>Choose a find</h3><p>Use categories, brands and search to find the right item.</p></article>
+        <article><strong>2</strong><h3>Check QC</h3><p>Open QC links when available before ordering.</p></article>
+        <article><strong>3</strong><h3>Buy directly</h3><p>The buy button sends users to the product URL stored in your sheet.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>BeProud Finds is a curated catalog. Product links, images and prices come from the connected spreadsheet.</p>
+  </footer>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

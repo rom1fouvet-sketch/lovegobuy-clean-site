@@ -1,0 +1,3 @@
+product_group_id,variant_id,category,subcategory,brand,name,color,size,price,currency,product_url,image_url,qc_url,quality,status
+rl-polo-001,1,Clothing,Polo Shirts,Ralph Lauren,Ralph Lauren Polo Shirt,White,S-XL,18.99,USD,https://example.com/product-white,https://i.ebayimg.com/images/g/VpUAAOSwqGliklOB/s-l1600.webp,,9/10,active
+seiko-mod-001,1,Accessories,Watches,Seiko,Seiko Mod Datejust,Silver,One Size,79.99,USD,https://example.com/watch,https://luxury-mods.fr/cdn/shop/files/seiko-mod-datejust-who-s-care-361.png?v=1750087694&width=1000,,8/10,active
