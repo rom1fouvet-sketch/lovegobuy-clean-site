@@ -216,7 +216,6 @@ function renderProducts() {
       const variant = product.variants.find(v => v.variantId === event.target.value);
       if (!variant) return;
       const image = card.querySelector(".product-image");
-      image.classList.remove("white-background");
       image.src = variant.imageUrl;
       card.querySelector(".price").textContent = variant.priceText;
       card.querySelector(".buy-link").href = variant.productUrl;
@@ -238,7 +237,7 @@ function renderCard(product) {
   return `
     <article class="product-card" data-product-id="${escapeHtml(product.id)}">
       <div class="image-wrap">
-        <img class="product-image" crossorigin="anonymous" src="${escapeHtml(v.imageUrl)}" alt="${escapeHtml(product.name)}" loading="lazy" onload="prepareProductImage(this)" onerror="this.closest('.product-card').classList.add('image-error')" />
+        <img class="product-image" crossorigin="anonymous" src="${escapeHtml(v.imageUrl)}" alt="${escapeHtml(product.name)}" loading="lazy" onerror="this.closest('.product-card').classList.add('image-error')" />
         <span class="badge">${escapeHtml(product.category)}</span>
       </div>
       <div class="card-body">
@@ -262,30 +261,6 @@ function renderCard(product) {
   `;
 }
 
-function prepareProductImage(img) {
-  img.classList.remove("white-background");
-  const src = img.currentSrc || img.src || "";
-  const studioDomains = /(ebayimg|dtcralphlauren|louisvuitton|farfetch|swatch\.com|media\.loropiana|luxury-mods|cdn\.shopify)/i;
-
-  try {
-    const canvas = document.createElement("canvas");
-    const width = canvas.width = 36;
-    const height = canvas.height = 36;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    ctx.drawImage(img, 0, 0, width, height);
-    const points = [[2, 2], [33, 2], [2, 33], [33, 33], [18, 2], [18, 33]];
-    let bright = 0;
-
-    for (const [x, y] of points) {
-      const [r, g, b, a] = ctx.getImageData(x, y, 1, 1).data;
-      if (a > 230 && r > 232 && g > 232 && b > 232) bright++;
-    }
-
-    if (bright >= 3) img.classList.add("white-background");
-  } catch (error) {
-    if (studioDomains.test(src)) img.classList.add("white-background");
-  }
-}
 
 function escapeHtml(value) {
   return String(value ?? "")
