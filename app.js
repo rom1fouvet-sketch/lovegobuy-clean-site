@@ -215,8 +215,7 @@ function renderProducts() {
       const product = state.products.find(p => p.id === productId);
       const variant = product.variants.find(v => v.variantId === event.target.value);
       if (!variant) return;
-      const image = card.querySelector(".product-image");
-      image.src = variant.imageUrl;
+      card.querySelector(".product-image").src = variant.imageUrl;
       card.querySelector(".price").textContent = variant.priceText;
       card.querySelector(".buy-link").href = variant.productUrl;
       const qcLink = card.querySelector(".qc-link");
@@ -237,7 +236,7 @@ function renderCard(product) {
   return `
     <article class="product-card" data-product-id="${escapeHtml(product.id)}">
       <div class="image-wrap">
-        <img class="product-image" crossorigin="anonymous" src="${escapeHtml(v.imageUrl)}" alt="${escapeHtml(product.name)}" loading="lazy" onerror="this.closest('.product-card').classList.add('image-error')" />
+        <img class="product-image" src="${escapeHtml(v.imageUrl)}" alt="${escapeHtml(product.name)}" loading="lazy" onerror="this.closest('.product-card').classList.add('image-error')" />
         <span class="badge">${escapeHtml(product.category)}</span>
       </div>
       <div class="card-body">
@@ -260,7 +259,6 @@ function renderCard(product) {
     </article>
   `;
 }
-
 
 function escapeHtml(value) {
   return String(value ?? "")
