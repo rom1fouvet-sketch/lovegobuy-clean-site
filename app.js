@@ -3,6 +3,7 @@ const state = {
   products: [],
   filtered: [],
   visibleCount: 12,
+  homeShuffleSeed: Math.random(),
 };
 
 const REQUIRED_COLUMNS = ["product_group_id", "category", "subcategory", "brand", "name", "price", "currency", "product_url", "image_url", "status"];
@@ -91,6 +92,21 @@ function isValidUrl(url) {
 function parsePrice(value) {
   const match = String(value || "").replace(",", ".").match(/[0-9]+(\.[0-9]+)?/);
   return match ? Number(match[0]) : null;
+}
+
+
+function seededRandom(seed) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function shuffleProducts(list, seed = Math.random()) {
+  const copy = [...list];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(seededRandom(seed + i * 97.31) * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
 }
 
 function formatPrice(value, currency = "USD") {
@@ -204,12 +220,16 @@ function applyFilters() {
     return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
   });
 
-  list.sort((a, b) => {
-    if (sort === "priceAsc") return (a.minPrice ?? Infinity) - (b.minPrice ?? Infinity);
-    if (sort === "priceDesc") return (b.minPrice ?? -Infinity) - (a.minPrice ?? -Infinity);
-    if (sort === "nameAsc") return a.name.localeCompare(b.name);
-    return a.createdOrder - b.createdOrder;
-  });
+  if (category === "all" && sort === "newest") {
+    list = shuffleProducts(list, state.homeShuffleSeed);
+  } else {
+    list.sort((a, b) => {
+      if (sort === "priceAsc") return (a.minPrice ?? Infinity) - (b.minPrice ?? Infinity);
+      if (sort === "priceDesc") return (b.minPrice ?? -Infinity) - (a.minPrice ?? -Infinity);
+      if (sort === "nameAsc") return a.name.localeCompare(b.name);
+      return a.createdOrder - b.createdOrder;
+    });
+  }
 
   state.filtered = list;
   state.visibleCount = 12;
